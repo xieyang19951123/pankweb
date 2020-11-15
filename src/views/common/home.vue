@@ -93,13 +93,11 @@ export default {
     },
     mounted() {
 
-        this.getPunchup()
-        this.getAllDot()
-
     },
     activated() {
         // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
-
+        this.getPunchup()
+        this.getAllDot()
         if (this.chartBar) {
             this.chartBar.resize()
         }
@@ -136,7 +134,7 @@ export default {
             var option = {
                 color: ["#3398DB"],
                 title: {
-                    text: '参加人数'
+                    text: '今日打卡人数'
                 },
                 tooltip: {},
                 legend: {
