@@ -13,6 +13,21 @@
                 <div id="J_chartPieBox" class="chart-box"></div>
             </el-card>
         </el-col>
+        <el-col :span="12">
+            <el-card>
+                <div id="J_chartPieBox1" class="chart-box"></div>
+            </el-card>
+        </el-col>
+        <el-col :span="12">
+            <el-card>
+                <div id="J_chartPieBox2" class="chart-box"></div>
+            </el-card>
+        </el-col>
+        <el-col :span="12">
+            <el-card>
+                <div id="J_chartPieBox3" class="chart-box"></div>
+            </el-card>
+        </el-col>
     </el-row>
 
 </div>
@@ -25,6 +40,54 @@ export default {
         return {
 
             chartBar: null,
+            option: {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [],
+                    type: 'bar'
+                }]
+            },
+            monthoption: {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [],
+                    type: 'bar'
+                }]
+            },
+            yearsoption: {
+                title: {
+                    text: '年度参加人数'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [],
+                    type: 'bar'
+                }]
+            }
 
         }
     },
@@ -43,6 +106,7 @@ export default {
         if (this.chartPie) {
             this.chartPie.resize()
         }
+        this.getmongth()
     },
     methods: {
         getAllDot() {
@@ -171,6 +235,52 @@ export default {
                 this.chartPie.resize()
             })
         },
+
+        getmongth() {
+            this.$http({
+                url: this.$http.adornUrl('/pank/mongth/get'),
+                method: 'get',
+                //params: this.$http.adornParams({})
+            }).then(({
+                data
+            }) => {
+                console.log(data)
+                let weeks = data.weeknumbers.map(item => {
+                    return '第' + item.week + '周'
+                })
+                let week = document.getElementById('J_chartPieBox1')
+                this.option.xAxis.data = weeks
+                this.option.series[0].data = data.weeknumbers.map(item => {
+                    return item.pnumber
+                })
+                this.option.title.text = data.years + "年" + data.month + "月"
+                //console.log(this.option.series.data)
+                echarts.init(week).setOption(this.option)
+
+                let month = document.getElementById('J_chartPieBox2')
+                this.monthoption.xAxis.data = data.monthnumbers.map(item => {
+                    return '第' + item.month + '月'
+                })
+                this.monthoption.series[0].data = data.monthnumbers.map(item => {
+                    return item.pnumber
+                })
+                this.monthoption.title.text = data.years + "年"
+                //console.log(this.option.series.data)
+                echarts.init(month).setOption(this.monthoption)
+
+                let years = document.getElementById('J_chartPieBox3')
+                this.yearsoption.xAxis.data = data.yearsnumbers.map(item => {
+                    return '第' + item.years + '年'
+                })
+                this.yearsoption.series[0].data = data.yearsnumbers.map(item => {
+                    return item.pnumber
+                })
+
+                //console.log(this.option.series.data)
+                echarts.init(years).setOption(this.yearsoption)
+
+            })
+        }
 
     }
 }

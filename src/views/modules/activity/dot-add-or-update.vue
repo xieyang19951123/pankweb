@@ -58,17 +58,17 @@ export default {
             dataRule: {
                 dName: [{
                     required: true,
-                    message: '用户名不能为空',
+                    message: '点位名称不能为空',
                     trigger: 'blur'
                 }],
                 dDescribe: [{
                     required: true,
-                    message: '用户名不能为空',
+                    message: '点位介绍不能为空',
                     trigger: 'blur'
                 }],
                 longitude: [{
                     required: true,
-                    message: '用户名不能为空',
+                    message: '经纬度不能为空',
                     trigger: 'blur'
                 }]
             }
